@@ -1,0 +1,329 @@
+/* =========================================================
+   style.css — 모바일 우선(Mobile-first)
+   기본 = 모바일(<640px), 화면이 커지면 min-width 미디어쿼리로 덧붙임
+   브레이크포인트: 640 / 768 / 1024 / 1280
+   ========================================================= */
+
+/* ---------- 1. 색상 변수 (색을 바꾸려면 여기만 고치세요) ---------- */
+:root {
+  --navy: #1E3A5F;          /* 메인 네이비 */
+  --orange: #F59E0B;        /* 포인트 오렌지(안전 컬러) */
+  --bg: #FFFFFF;            /* 기본 배경 */
+  --bg-alt: #F1F5F9;        /* 연한 회색 배경 */
+  --surface: #FFFFFF;       /* 카드 배경 */
+  --text: #1F2937;          /* 본문 글자 */
+  --text-muted: #475569;    /* 보조 글자 (흰 배경 대비 7:1 이상) */
+  --heading: #1E3A5F;       /* 제목 글자 */
+  --link: #1E3A5F;
+  --border: #CBD5E1;
+  --on-orange: #1E3A5F;     /* 오렌지 배경 위 글자색 (대비 5:1 이상) */
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+  --header-h: 64px;
+}
+
+/* 다크 모드: 같은 변수 이름에 다른 색을 넣어 통째로 교체 */
+[data-theme="dark"] {
+  --bg: #0F172A;
+  --bg-alt: #162033;
+  --surface: #1E293B;
+  --text: #E2E8F0;
+  --text-muted: #B6C2D3;
+  --heading: #F8FAFC;
+  --link: #FBBF24;
+  --border: #334155;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 2. 기본 초기화 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;                 /* 부드러운 스크롤 */
+  scroll-padding-top: var(--header-h);     /* 고정 헤더에 제목이 가리지 않게 */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);  /* 화면에 따라 16~18px */
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;                      /* 가로 스크롤 방지(안전장치) */
+  transition: background-color .2s, color .2s;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: var(--link); }
+button { font: inherit; cursor: pointer; }
+
+/* 키보드 포커스가 항상 보이도록 */
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+/* 화면에는 숨기고 스크린리더만 읽는 글 */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* 본문 바로가기: 평소엔 숨김, 키보드 Tab 시 나타남 */
+.skip-link {
+  position: absolute; left: 8px; top: -60px; z-index: 200;
+  background: var(--orange); color: var(--on-orange);
+  padding: 10px 16px; border-radius: 6px; font-weight: 700;
+}
+.skip-link:focus { top: 8px; }
+
+/* ---------- 3. 공통 레이아웃 ---------- */
+.container {
+  width: 100%;
+  max-width: 1200px;           /* 본문 최대 폭 */
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+.narrow { max-width: 760px; }
+.center { text-align: center; }
+
+.section { padding-block: clamp(56px, 8vw, 96px); }
+.section-alt { background: var(--bg-alt); }
+
+.section-title {
+  font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  color: var(--heading);
+  line-height: 1.3;
+  margin-bottom: 32px;
+}
+/* 제목 아래 오렌지 포인트 선 */
+.section-title::after {
+  content: ""; display: block; width: 48px; height: 4px;
+  background: var(--orange); border-radius: 2px; margin-top: 12px;
+}
+.center .section-title::after { margin-inline: auto; }
+
+/* ---------- 4. 버튼 ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; min-width: 44px;         /* 터치 영역 44px 이상 */
+  padding: 0 24px; border-radius: 8px;
+  font-weight: 700; text-decoration: none;
+  border: 2px solid transparent;
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.btn-primary { background: var(--orange); color: var(--on-orange); }
+.btn-primary:hover { background: #FBBF24; }
+.btn-outline { background: transparent; color: var(--heading); border-color: var(--heading); }
+.btn-outline:hover { background: var(--heading); color: var(--bg); }
+.btn-small { min-height: 44px; padding: 0 18px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 8px;
+  background: transparent; color: var(--heading); border: 0;
+}
+.icon-btn:hover { background: var(--bg-alt); }
+
+/* ---------- 5. 헤더 / 내비게이션 (모바일: 햄버거) ---------- */
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
+  height: var(--header-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  height: 100%; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-weight: 800; font-size: 1.25rem; color: var(--heading); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.header-actions { display: flex; gap: 4px; }
+
+/* 모바일 메뉴: 헤더 아래로 펼쳐지는 패널. 기본은 숨김 */
+.site-nav {
+  position: absolute; top: var(--header-h); left: 0; right: 0;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: none;
+}
+.site-nav.is-open { display: block; }
+.site-nav a {
+  display: flex; align-items: center; min-height: 48px;   /* 터치 영역 */
+  padding: 0 24px; color: var(--heading); text-decoration: none; font-weight: 600;
+}
+.site-nav a:hover { background: var(--bg-alt); }
+
+/* 해/달 아이콘: 라이트일 때 달(→다크로 전환), 다크일 때 해 */
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+/* ---------- 6. Hero ---------- */
+.hero {
+  padding-top: calc(var(--header-h) + 40px);
+  padding-bottom: 56px;
+  background: linear-gradient(180deg, var(--bg-alt), var(--bg));
+}
+.hero-inner { display: grid; gap: 32px; align-items: center; }
+.hero-photo { order: -1; }                      /* 모바일: 사진이 위 */
+.hero-photo img {
+  width: min(280px, 70vw); aspect-ratio: 1 / 1; object-fit: cover;
+  border-radius: 50%; border: 6px solid var(--orange);
+  margin-inline: auto; background: var(--bg-alt); box-shadow: var(--shadow);
+}
+.hero-text { text-align: center; }
+.eyebrow { color: var(--text-muted); font-size: .875rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+.hero h1 { font-size: clamp(2.5rem, 2rem + 3vw, 4rem); color: var(--heading); line-height: 1.15; margin-top: 8px; }
+.hero-lead { font-size: clamp(1.125rem, 1rem + 0.8vw, 1.5rem); color: var(--text); margin-top: 12px; }
+.hero .btn-row { justify-content: center; }
+
+/* ---------- 7. About ---------- */
+.about-text { font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem); line-height: 1.9; }
+
+/* ---------- 8. 카드 (모바일 1열) ---------- */
+.card-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; box-shadow: var(--shadow);
+  border-top: 4px solid var(--orange);
+}
+.card h3 { font-size: 1.25rem; color: var(--heading); margin-top: 16px; line-height: 1.4; }
+.card p { color: var(--text-muted); margin-top: 8px; }
+.card-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 12px;
+  background: var(--navy); color: #fff;
+}
+[data-theme="dark"] .card-icon { background: #0F172A; color: var(--orange); border: 1px solid var(--border); }
+
+/* ---------- 9. 타임라인 (모바일: 왼쪽 정렬) ---------- */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {                         /* 세로선 */
+  content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px;
+  width: 3px; background: var(--border);
+}
+.timeline-item { position: relative; padding-bottom: 24px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before {                    /* 동그란 점 */
+  content: ""; position: absolute; left: -28px; top: 22px;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--navy); border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--navy);
+}
+[data-theme="dark"] .timeline-item::before { background: var(--text-muted); box-shadow: 0 0 0 2px var(--text-muted); }
+.timeline-item.is-current::before { background: var(--orange); box-shadow: 0 0 0 2px var(--orange); }
+.timeline-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; box-shadow: var(--shadow);
+}
+.timeline-year { display: inline-block; font-weight: 800; color: var(--heading); font-size: 1.0625rem; }
+.is-current .timeline-year { background: var(--orange); color: var(--on-orange); padding: 0 10px; border-radius: 999px; }
+.timeline-card h3 { font-size: 1.1875rem; color: var(--heading); margin-top: 4px; }
+.timeline-card p { color: var(--text-muted); margin-top: 6px; }
+
+/* ---------- 10. 자격증 배지 ---------- */
+.badges { display: flex; flex-wrap: wrap; gap: 12px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 8px 18px; border-radius: 999px;
+  background: var(--navy); color: #fff; font-weight: 700;
+}
+[data-theme="dark"] .badge { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+[data-theme="dark"] .badge svg { color: var(--orange); }
+.badge-pending { background: transparent; color: var(--heading); border: 2px dashed var(--heading); }
+[data-theme="dark"] .badge-pending { background: transparent; border-color: var(--text-muted); }
+.badge-note {
+  background: var(--orange); color: var(--on-orange);
+  font-size: .8125rem; padding: 2px 10px; border-radius: 999px;
+}
+
+/* ---------- 11. Contact ---------- */
+.contact-lead { color: var(--text-muted); margin-bottom: 24px; }
+.contact-list { display: grid; gap: 12px; margin-bottom: 28px; justify-items: center; }
+.contact-link {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px;
+  padding: 0 20px; border-radius: 8px; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--heading); font-weight: 600; word-break: break-all;
+}
+.contact-link:hover { border-color: var(--orange); }
+.copy-status { min-height: 1.7em; margin-top: 12px; font-weight: 600; color: var(--heading); }
+
+/* ---------- 12. Footer / 맨 위로 ---------- */
+.site-footer { background: var(--navy); color: #fff; padding-block: 28px; }
+.footer-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.site-footer .btn-outline { color: #fff; border-color: #fff; }
+.site-footer .btn-outline:hover { background: #fff; color: var(--navy); }
+[data-theme="dark"] .site-footer { background: #0B1220; }
+
+.to-top {
+  position: fixed; right: 16px; bottom: 16px; z-index: 90;
+  width: 48px; height: 48px; border-radius: 50%; border: 0;
+  background: var(--orange); color: var(--on-orange);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+.to-top[hidden] { display: none; }
+
+/* ---------- 13. 스크롤 페이드인 (JS가 켜져 있을 때만 숨김 상태로 시작) ---------- */
+.js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+/* 시스템에서 '동작 줄이기'를 켰다면 모든 움직임 끄기 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .js .reveal { opacity: 1; transform: none; }
+}
+
+/* =========================================================
+   반응형: 화면이 커질수록 덧붙이는 규칙 (min-width)
+   ========================================================= */
+
+/* ---- 640px 이상: 큰 폰·작은 태블릿 → 카드 2열 ---- */
+@media (min-width: 640px) {
+  .container { padding-inline: 32px; }
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { flex-direction: row; justify-content: space-between; }
+}
+
+/* ---- 768px 이상: 태블릿 → Hero 좌우 배치 ---- */
+@media (min-width: 768px) {
+  .hero-inner { grid-template-columns: 1.2fr 1fr; gap: 48px; }
+  .hero-photo { order: 0; }
+  .hero-text { text-align: left; }
+  .hero .btn-row { justify-content: flex-start; }
+  .hero-photo img { width: min(380px, 100%); }
+  .contact-list { grid-auto-flow: column; justify-content: center; }
+}
+
+/* ---- 1024px 이상: 데스크톱 → 상단 고정 메뉴, 프로젝트 3열, 타임라인 지그재그 ---- */
+@media (min-width: 1024px) {
+  .menu-btn { display: none; }                 /* 햄버거 숨김 */
+  .header-inner { gap: 24px; }
+  .site-nav {
+    position: static; display: block; background: transparent;
+    border: 0; box-shadow: none; margin-left: auto;
+  }
+  .site-nav ul { display: flex; gap: 4px; }
+  .site-nav a { padding: 0 14px; border-radius: 8px; }
+
+  .projects-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* 타임라인: 가운데 선, 홀수는 왼쪽·짝수는 오른쪽 */
+  .timeline { padding-left: 0; }
+  .timeline::before { left: 50%; transform: translateX(-50%); }
+  .timeline-item { width: 50%; padding-right: 48px; padding-bottom: 32px; }
+  .timeline-item::before { left: auto; right: -9px; top: 26px; }
+  .timeline-item:nth-child(even) {
+    margin-left: 50%; padding-right: 0; padding-left: 48px;
+  }
+  .timeline-item:nth-child(even)::before { right: auto; left: -9px; }
+  .timeline-item:nth-child(odd) .timeline-card { text-align: right; }
+}
+
+/* ---- 1280px 이상: 큰 데스크톱 → 핵심 역량 4열, 여백 확대 ---- */
+@media (min-width: 1280px) {
+  .skills-grid { grid-template-columns: repeat(4, 1fr); }
+  .container { padding-inline: 40px; }
+}
