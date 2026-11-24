@@ -168,7 +168,7 @@ button { font: inherit; cursor: pointer; }
 .hero-photo { order: -1; }                      /* 모바일: 사진이 위 */
 .hero-photo img {
   width: min(280px, 70vw); aspect-ratio: 1 / 1; object-fit: cover;
-  border-radius: 50%; border: 6px solid var(--orange);
+  border-radius: 50%; border: 6px solid var(--orange); object-position: 50% 20%; /* 세로 사진에서 얼굴이 위쪽에 오도록 */
   margin-inline: auto; background: var(--bg-alt); box-shadow: var(--shadow);
 }
 .hero-text { text-align: center; }
