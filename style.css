@@ -89,6 +89,7 @@ button { font: inherit; cursor: pointer; }
 
 .section { padding-block: clamp(56px, 8vw, 96px); }
 .section-alt { background: var(--bg-alt); }
+.section-divided { border-top: 1px solid var(--border); }  /* 같은 배경 섹션 사이 구분선 */
 
 .section-title {
   font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
