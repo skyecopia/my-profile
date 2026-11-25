@@ -295,7 +295,7 @@ button { font: inherit; cursor: pointer; }
   .hero-text { text-align: left; }
   .hero .btn-row { justify-content: flex-start; }
   .hero-photo img { width: min(380px, 100%); }
-  .contact-list { grid-auto-flow: column; justify-content: center; }
+  .contact-list { display: flex; flex-wrap: wrap; justify-content: center; }  /* 항목이 많아도 줄바꿈 */
 }
 
 /* ---- 1024px 이상: 데스크톱 → 상단 고정 메뉴, 프로젝트 3열, 타임라인 지그재그 ---- */
